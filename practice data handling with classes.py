@@ -23,28 +23,21 @@ def profile(fnc):
 
     return inner
 
-#############################
-# September 7th Jess moves out
+
 #likes_to_update: list[int] = []
+#likes: list[int] = [0,2,3,4,5,6]
 likes_to_update: list[int] = [x for x in range(500,600)]
 likes_to_save: list[int] = [like_to_update for like_to_update in likes_to_update]
 #A second list is made so films already used to calculate score do not need to be checked again 
 
-#likes: list[int] = [0,2,3,4,5,6]
+
 
 @profile
 def suggestion_alorithm(list_of_film_data):
-##    for like in likes_to_update:
-##        for iterator in list_of_film_data[like].get_data():
-##            data_of_index.append(iterator)
-    
     data_of_index: list[str] = [iterator for like in likes_to_update for iterator in list_of_film_data[like].get_data()]
-    #INSTEAD OF THIS TRY RETURNING THE DATA AS THE SET THAT IT IS BUT THEN COLLAPSING THIS ARRAY ON ITSELF SO ITS ONLY 1 DIMESNSIONAL
     likes_to_update.clear()
-    #Compare each film with the data for the films the user likes
-    for each_film in list_of_film_data:
+    for each_film in list_of_film_data: #Compare each film with the data of the films the user likes
         each_film.set_score(data_of_index)
-
     return list_of_film_data
 
 def selecting_film(list_of_film_classes):
@@ -57,7 +50,7 @@ def selecting_film(list_of_film_classes):
         likes_to_update.append(finding_film)
         max_likes(finding_film)
         
-def max_likes(finding_film):
+def max_likes(finding_film): #The system only keeps track of the last 100 films the user likes inbetween sessions
     if len(likes_to_save) >= 100:
         likes_to_save.pop(0)
     likes_to_save.append(finding_film)
@@ -71,29 +64,3 @@ def main():
             print(list_of_film_classes[x].title + "\t" + str(list_of_film_classes[x].score)) #Faster to concatenate strings than to use ','
         selecting_film(list_of_film_classes)
 main()
-
-
-
-
-
-
-#USED TO ADD ID'S
-
-##script_dir = os.path.dirname(__file__)  # Script directory
-##script_dir, x = script_dir.rsplit('\\', 1)
-##full_path = os.path.join(script_dir, 'films_data2.csv')
-##with open(full_path, 'w', newline='') as file:
-##    fieldnames = ['ID', 'title', 'release date', 'rating', 'genres', 'directors', 'writers', 'cast_names', 'related films']
-##    writer = csv.DictWriter(file, fieldnames=fieldnames)
-##    writer.writeheader()
-##val = 0
-##for film in list_of_film_classes:
-##    with open(full_path, 'a', newline='') as file:
-##        fieldnames = ['ID', 'title', 'release date', 'rating', 'genres', 'directors', 'writers', 'cast_names', 'related films']
-##        writer = csv.DictWriter(file, fieldnames=fieldnames)
-##        writer.writerow({'ID': val, 'title': film.title, 'release date': film.date, 'rating': film.rating, 'genres': film.genres, 'directors': film.directors,
-##                         'writers': film.writers, 'cast_names': film.cast, 'related films': film.related_films})
-##    val += 1
-
-
-    
