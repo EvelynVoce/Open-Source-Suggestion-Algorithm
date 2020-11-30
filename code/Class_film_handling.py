@@ -23,8 +23,8 @@ class Film_data:
         for like in likes:
             if like in self.data_used_for_scores2:
                 self.score += 1
-        if self.id in already_watched:
-            self.score //=2
+##        if self.id in already_watched:
+##            self.score //=2
             #If the user has already watched that film make the score lower
             #This is so users dont get recommended the same films all the time
 

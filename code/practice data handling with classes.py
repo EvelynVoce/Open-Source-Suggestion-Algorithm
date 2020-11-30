@@ -26,7 +26,7 @@ def profile(fnc):
 
 #likes_to_update: list[int] = []
 #likes_to_update: list[int] = [0,2,3,4,5,6]
-likes_to_update: list[int] = [x for x in range(500,600)]
+likes_to_update: list[int] = []#[x for x in range(500,600)]
 likes_to_save: list[int] = [like_to_update for like_to_update in likes_to_update]
 #A second list is made so films already used to calculate score do not need to be checked again 
 
