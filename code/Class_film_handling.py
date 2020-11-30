@@ -1,7 +1,7 @@
 class Film_data:
     
     def __init__(self, data): #Setting the values for class attributes
-        self.id = data[0]
+        self.id = int(data[0])
         self.title = data[1]
         self.date = data[2]
         self.rating = data[3]
@@ -19,9 +19,12 @@ class Film_data:
         for element in self.data_used_for_scores2:
             yield element
     
-    def set_score(self, likes):#Setting the score
+    def set_score(self, likes, already_watched):#Setting the score
         for like in likes:
             if like in self.data_used_for_scores2:
                 self.score += 1
-
+        if self.id in already_watched:
+            self.score //=2
+            #If the user has already watched that film make the score lower
+            #This is so users dont get recommended the same films all the time
 
