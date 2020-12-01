@@ -1,7 +1,7 @@
 # Film-suggestion
 What is it?
 An algorithm that will compare films the user likes against other films to accurately suggest other films the user will like.
-Please not the main file (The one you have to run) is practice data handling.
+The data was scraped from imdb using beautifulsoup.
 
 What I learned:
 1) How to implement binary search using classes.
