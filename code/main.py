@@ -1,37 +1,15 @@
 from film_data_csv_reader import reading_csv
 import binary_search
-#############################   GIT VERSION
 
-import cProfile, pstats, io
+import profiler #This profiles the system so I can check if anything is too innefficient
 
-def profile(fnc):
-    
-    """A decorator that uses cProfile to profile a function"""
-    
-    def inner(*args, **kwargs):
-        
-        pr = cProfile.Profile()
-        pr.enable()
-        retval = fnc(*args, **kwargs)
-        pr.disable()
-        s = io.StringIO()
-        sortby = 'cumulative'
-        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-        ps.print_stats()
-        print(s.getvalue())
-        return retval
-
-    return inner
-
-
-#likes_to_update: list[int] = []
 #likes_to_update: list[int] = [0,2,3,4,5,6]
-likes_to_update: list[int] = []#[x for x in range(500,600)]
+likes_to_update: list[int] = [x for x in range(500,600)]
 likes_to_save: list[int] = [like_to_update for like_to_update in likes_to_update]
 #A second list is made so films already used to calculate score do not need to be checked again 
 
 
-@profile 
+@profiler.profile
 def suggestion_alorithm(list_of_film_data):
     data_of_index: list[str] = [iterator for like in likes_to_update for iterator in list_of_film_data[like].get_data()]
     #This is unneceary on repeated runs^ there will only be one like so why bother sorting the films by id? Instead .get_(data) on the list used for binary sort! 
