@@ -11,21 +11,37 @@ class Film_data:
         self.cast = data[7]
         self.related_films = data[8]
         self.score = 0
-        
+        self.watched = False
         self.list_of_lits_used_for_scores = {self.genres, self.directors, self.writers, self.cast, self.related_films}
         self.data_used_for_scores2: set[str] = {element for data in self.list_of_lits_used_for_scores for element in data.split(', ')}
+
 
     def get_data(self): #Gets the data for each film the user has liked
         for element in self.data_used_for_scores2:
             yield element
+
+            
+    def set_watched(self):
+        self.watched = True
+
     
-    def set_score(self, likes, already_watched):#Setting the score
+    def set_not_watched(self):
+        # If is no longer in the list of likes_to_save then film is considered not watched
+        self.watched = False
+                
+
+    def set_score(self, likes):#Setting the score
         for like in likes:
             if like in self.data_used_for_scores2:
-                self.score += 1
+                if not self.watched:
+                    self.score += 1
                 
-        if self.id in already_watched:
-            self.score //=2
-            #If the user has already watched that film make the score lower
-            #This is so users dont get recommended the same films all the time
+                else:
+                    self.score += 0.2 # Film score goes up 5 times slower
 
+
+    # It's important to note that self.score += 0.2 is not the same as self.score /= 5 at the end.
+    # Example:
+    # Joker 16 with self.score += 0.5 would end up giving a score of 32
+    # Joker 16 with self.score /= 2 at the end would give a score of 24
+    # Joker goes up by 32 and is then halved as oppose to joker going up by half of 32 (16)

@@ -12,10 +12,15 @@ likes_to_save: list[int] = [like_to_update for like_to_update in likes_to_update
 @profiler.profile
 def suggestion_alorithm(list_of_film_data):
     data_of_index: list[str] = [iterator for like in likes_to_update for iterator in list_of_film_data[like].get_data()]
+    for like in likes_to_update:
+        #Films watched checked here and not in selecting film so films can be set to watched after the program is closed
+        if list_of_film_data[like].watched == False:
+            list_of_film_data[like].set_watched()
+            
     #This is unneceary on repeated runs^ there will only be one like so why bother sorting the films by id? Instead .get_(data) on the list used for binary sort! 
     likes_to_update.clear()
     for each_film in list_of_film_data: #Compare each film with the data of the films the user likes
-        each_film.set_score(data_of_index, likes_to_save)
+        each_film.set_score(data_of_index)
     return list_of_film_data
 
   
@@ -24,17 +29,17 @@ def selecting_film(list_of_film_classes):
     #Binary Search
     list_of_film_classes.sort(key=lambda x: x.title) #Sort by title so binary search can be performed
     finding_film = binary_search.BinarySearch(list_of_film_classes, like, len(list_of_film_classes)-1)
+    list_of_film_classes.sort(key=lambda x: x.id) #Sort by ID so the films are ready to get the data
     if finding_film != None:
         likes_to_update.append(finding_film)
-        max_likes(finding_film)
-    list_of_film_classes.sort(key=lambda x: x.id) #Sort by ID so the films are ready to get the data
+        max_likes(finding_film, list_of_film_classes)  
+    
 
-      
-def max_likes(finding_film): #The system only keeps track of the last 100 films the user likes inbetween sessions
+def max_likes(finding_film, list_of_film_classes): #The system only keeps track of the last 100 films the user likes inbetween sessions
     if len(likes_to_save) >= 100:
+        list_of_film_classes[likes_to_save[0]].set_not_watched()
         likes_to_save.pop(0)
     likes_to_save.append(finding_film)
-    
    
 def main():
     list_of_film_classes = reading_csv() # 0.1 seconds roughly
@@ -43,6 +48,7 @@ def main():
         list_of_film_classes.sort(key=lambda x: x.score, reverse=True) #Efficient sorting algorithm
         for x in range(10):
             print(list_of_film_classes[x].title + "\t" + str(list_of_film_classes[x].score)) #Faster to concatenate strings than to use ','
+        
         selecting_film(list_of_film_classes)
         
 main()
