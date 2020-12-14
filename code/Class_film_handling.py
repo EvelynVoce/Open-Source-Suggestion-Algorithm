@@ -12,8 +12,8 @@ class Film_data:
         self.related_films = data[8]
         self.score = 0
         self.watched = False
-        self.list_of_lits_used_for_scores = {self.genres, self.directors, self.writers, self.cast, self.related_films}
-        self.data_used_for_scores2: set[str] = {element for data in self.list_of_lits_used_for_scores for element in data.split(', ')}
+        list_of_lits_used_for_scores = {self.genres, self.directors, self.writers, self.cast, self.related_films}
+        self.data_used_for_scores2: set[str] = {element for data in list_of_lits_used_for_scores for element in data.split(', ')}
 
 
     def get_data(self): #Gets the data for each film the user has liked
@@ -33,11 +33,11 @@ class Film_data:
     def set_score(self, likes):#Setting the score
         for like in likes:
             if like in self.data_used_for_scores2:
-                if not self.watched:
-                    self.score += 1
+                if self.watched:
+                    self.score += 0.2
                 
                 else:
-                    self.score += 0.2 # Film score goes up 5 times slower
+                    self.score += 1 # Film score goes up 5 times slower
 
 
     # It's important to note that self.score += 0.2 is not the same as self.score /= 5 at the end.

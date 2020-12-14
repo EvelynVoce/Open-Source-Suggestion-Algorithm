@@ -6,10 +6,15 @@ def BinarySearch(list_of_film_classes, like, ub, lb=0):
         return None
     #When ub-lb = 1 the first item will always be chosen.
     #This condition forces the list to chose the next item
-    if ub-lb == 1:
-        return BinarySearch(list_of_film_classes, like, ub, mid+1)
     
-    if list_of_film_classes[mid].title.lower() == like:
+    elif ub-lb == 1:
+        if list_of_film_classes[ub].title.lower() == like:
+            return list_of_film_classes[ub].id
+        
+        elif list_of_film_classes[lb].title.lower() == like:
+            return list_of_film_classes[lb].id
+    
+    elif list_of_film_classes[mid].title.lower() == like:
         return list_of_film_classes[mid].id # Item found with this ID
 
     elif list_of_film_classes[mid].title.lower() > like:
