@@ -1,8 +1,7 @@
 import csv
 import os
 import hashlib
-
-SALT = "AbX2f8Z&1SVFHUB4UZPW"
+import Password_validation
 
 script_dir = os.path.dirname(__file__)  # Script directory
 script_dir, x = script_dir.rsplit('\\', 1) #This line won't run correctly when running this file but will run when running the main file
@@ -31,40 +30,6 @@ def reading_account(login_username, login_password):
                 if row[0] == login_username and row[1] == login_password:
                     return row
 
-def hashing(data_to_encrypt):
-    plus_salt = data_to_encrypt + SALT
-    hashed_data = hashlib.sha256((plus_salt).encode()).hexdigest()
-    return hashed_data
-
-    
-def login():
-    login_username = hashing(input("Username: "))
-    login_password = hashing(input("Password: "))
-    account_found = reading_account(login_username, login_password)
-    if account_found != None:
-        return account_found
-
-
-def signup():
-    signup_username = hashing(input("Username: "))
-    signup_password = hashing(input("Password: "))
-    writing_account(signup_username, signup_password)
-
-
-def main_menu():
-    while 1:
-        answer = input("Do you want to login or signup?")
-        if answer.lower() == "signup":
-            signup()
-        elif answer.lower() == "login":
-            account_data = login()
-            if account_data != None:
-                return account_data
-            else:
-                print("Invalid account details")
-        else:
-            print("That was not a valid option")
-
 
 def updating_account_data(account, likes_to_save):
     lines_to_write_back = []
@@ -83,5 +48,49 @@ def updating_account_data(account, likes_to_save):
     with open(accounts_file_path, 'w', newline='') as file:
         writer = csv.writer(file)
         for line in lines_to_write_back:
-            writer.writerow([line[0], line[1], line[2]])
+            try: #This is needed because some films may have no likes yet
+                data = line[2]
+            except:
+                data = ""
+            writer.writerow([line[0], line[1], data])
     quit()
+
+    
+def hashing(data_to_encrypt):
+    SALT = "AbX2f8Z&1SVFHUB4UZPW"
+    plus_salt = data_to_encrypt + SALT
+    hashed_data = hashlib.sha256((plus_salt).encode()).hexdigest()
+    return hashed_data
+
+    
+def login():
+    login_username = hashing(input("Username: "))
+    login_password = hashing(input("Password: "))
+    account_found = reading_account(login_username, login_password)
+    if account_found != None:
+        return account_found
+
+
+def signup():
+    checks_passed = False
+    while not checks_passed:
+        signup_username = hashing(input("Username: "))
+        unhashed_password =  input("Password: ")
+        checks_passed = Password_validation.run_checks(unhashed_password) #Password validation
+    hashed_password = hashing(unhashed_password)
+    writing_account(signup_username, hashed_password)
+
+
+def main_menu():
+    while 1:
+        answer = input("Do you want to login or signup?")
+        if answer.lower() == "signup":
+            signup()
+        elif answer.lower() == "login":
+            account_data = login()
+            if account_data != None:
+                return account_data
+            else:
+                print("Invalid account details")
+        else:
+            print("That was not a valid option")
