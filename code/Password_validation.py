@@ -1,5 +1,6 @@
 # Password validation checks
 
+
 def contains_digit_and_char(input_string):
     digit_check = any(char.isdigit() for char in input_string)
     alpha_check = any(char.isalpha() for char in input_string)
@@ -13,7 +14,7 @@ def contains_digit_and_char(input_string):
 def length_check(input_string):
     length_valid = len(input_string) > 5
     if not length_valid:
-        print("Password invalid, password must be longer than 5 characters")
+        print("Password must be at least 6 characters")
     return length_valid
 
 
