@@ -1,4 +1,7 @@
-import cProfile, pstats, io
+import cProfile
+import pstats
+import io
+
 
 def profile(fnc):
     
@@ -8,13 +11,12 @@ def profile(fnc):
         
         pr = cProfile.Profile()
         pr.enable()
-        retval = fnc(*args, **kwargs)
+        return_val = fnc(*args, **kwargs)
         pr.disable()
         s = io.StringIO()
-        sortby = 'cumulative'
-        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
         ps.print_stats()
         print(s.getvalue())
-        return retval
+        return return_val
 
     return inner
