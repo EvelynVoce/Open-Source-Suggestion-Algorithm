@@ -11,18 +11,19 @@ What I learned:
 
 
 The film data includes:
-Film title
-Release date
-Film genre
-Directors
-Writers
-Cast
+Film title,
+Release date,
+Film genre,
+Directors,
+Writers,
+Cast and
 Related films
 
 
 Account data includes:
-Hashed usernames
-Hashed Passwords
+Hashed usernames,
+Hashed Passwords and
+watched films
 
 
 TV shows are included in this system too however they may be missing certain categories of data. In this case data may appear to be wrong in the csv file however the system still operates as intended despite this missing data. 
