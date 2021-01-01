@@ -3,7 +3,7 @@ import os
 import Class_film_handling
 
 script_dir = os.path.dirname(__file__)  # Script directory
-script_dir, x = script_dir.rsplit('\\', 1)  # Won't run correctly when running this file but will when running main
+script_dir, _ = script_dir.rsplit('\\', 1)  # Won't run correctly when running this file but will when running main
 full_path = os.path.join(script_dir, 'films_data2.csv')
 
 

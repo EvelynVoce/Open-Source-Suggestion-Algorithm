@@ -4,7 +4,7 @@ import hashlib
 import Password_validation
 
 script_dir = os.path.dirname(__file__)  # Script directory
-script_dir, x = script_dir.rsplit('\\', 1)  # Won't run correctly when running this file but will when running main
+script_dir, _ = script_dir.rsplit('\\', 1)  # Won't run correctly when running this file but will when running main
 accounts_file_path = os.path.join(script_dir, 'user_data.csv')
 
 
