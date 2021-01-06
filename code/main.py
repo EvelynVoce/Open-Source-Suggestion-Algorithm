@@ -2,12 +2,12 @@ from film_data_csv_reader import reading_csv
 import binary_search
 import Accounts
 import profiler  # This profiles the system so I can check if anything is too inefficient
-
+from os import system
 # Defining global variables at the module level.
 list_of_film_classes = []
 
 
-@profiler.profile
+# @profiler.profile
 def suggestion_algorithm_single_use(likes_to_save: list[int]):
     # This includes features that only need to be run at the start like setting saved films to watched
     data_of_index: list[str] = [data for like in likes_to_save for data in list_of_film_classes[like].get_data()]
@@ -19,7 +19,7 @@ def suggestion_algorithm_single_use(likes_to_save: list[int]):
     return data_of_index
 
 
-@profiler.profile
+# @profiler.profile
 def suggestion_algorithm(film_data_to_set_scores):
     for each_film in list_of_film_classes:  # Compare each film with the data of the films the user likes
         each_film.set_score(film_data_to_set_scores)
@@ -28,6 +28,7 @@ def suggestion_algorithm(film_data_to_set_scores):
 def selecting_film(likes_to_save):
     while True:  # Infinite loop uses return statement to break out
         like = input("\nWhat film do you like? (Enter Exit to quit)").lower()
+        system('cls')
         if like.lower() != "exit":
             # Binary Search
             list_of_film_classes.sort(key=lambda x: x.title)  # Sort by title so binary search can be performed
@@ -40,7 +41,9 @@ def selecting_film(likes_to_save):
                 max_likes(found_film_id, likes_to_save)
                 return False, data_of_index
             else:
-                print("That film was not found")
+                input("That film was not found - press any key to continue")
+                system('cls')
+
         else:
             return True, None
     
@@ -67,6 +70,7 @@ def main():
     global list_of_film_classes
     list_of_film_classes = reading_csv()  # 0.1 seconds roughly
     film_data_to_set_scores = suggestion_algorithm_single_use(likes_to_save)
+    system('cls')  # Clears the screen
     while 1:
         suggestion_algorithm(film_data_to_set_scores)
         list_of_film_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
