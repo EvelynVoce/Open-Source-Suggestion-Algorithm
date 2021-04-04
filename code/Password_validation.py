@@ -1,6 +1,5 @@
 # Password validation checks
 
-
 def contains_digit_and_char(input_string):
     digit_check = any(char.isdigit() for char in input_string)
     alpha_check = any(char.isalpha() for char in input_string)

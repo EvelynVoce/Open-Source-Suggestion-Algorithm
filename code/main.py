@@ -19,33 +19,35 @@ def suggestion_algorithm_single_use(likes_to_save: list[int]):
     return data_of_index
 
 
-# @profiler.profile
+@profiler.profile
 def suggestion_algorithm(film_data_to_set_scores):
     for each_film in list_of_film_classes:  # Compare each film with the data of the films the user likes
         each_film.set_score(film_data_to_set_scores)
 
 
 def selecting_film(likes_to_save):
+    user_wants_to_exit = True
+
     while True:  # Infinite loop uses return statement to break out
         like = input("\nWhat film do you like? (Enter Exit to quit)").lower()
         system('cls')
-        if like.lower() != "exit":
-            # Binary Search
-            list_of_film_classes.sort(key=lambda x: x.title)  # Sort by title so binary search can be performed
-            finding_film = binary_search.binary_search(list_of_film_classes, like, len(list_of_film_classes) - 1)
-            if finding_film is not None:
-                # data_of_index can be a set here because duplicates aren't relevant when only one film is considered
-                data_of_index: set = {iterator for iterator in list_of_film_classes[finding_film].get_data()}
-                list_of_film_classes[finding_film].set_watched()
-                found_film_id: int = list_of_film_classes[finding_film].id
-                max_likes(found_film_id, likes_to_save)
-                return False, data_of_index
-            else:
-                input("That film was not found - press any key to continue")
-                system('cls')
+        if like == "exit":
+            print("exit engaged")
+            return user_wants_to_exit, None
 
+        # Binary Search
+        list_of_film_classes.sort(key=lambda x: x.title)  # Sort by title so binary search can be performed
+        finding_film = binary_search.binary_search(list_of_film_classes, like, len(list_of_film_classes) - 1)
+        if finding_film is not None:
+            # data_of_index can be a set here because duplicates aren't relevant when only one film is considered
+            data_of_index: set = {iterator for iterator in list_of_film_classes[finding_film].get_data()}
+            list_of_film_classes[finding_film].set_watched()
+            found_film_id: int = list_of_film_classes[finding_film].id
+            max_likes(found_film_id, likes_to_save)
+            return (not user_wants_to_exit), data_of_index
         else:
-            return True, None
+            input("That film was not found - press any key to continue")
+            system('cls')
     
 
 def max_likes(found_film_id, likes_to_save):
