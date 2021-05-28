@@ -12,6 +12,7 @@ class FilmData:
         self.related_films = data[8]
         self.score = 0
         self.watched = False
+
         list_of_lists_used_for_scores = {self.genres, self.directors, self.writers, self.cast, self.related_films}
         self.data_used_for_scores2: set[str] = {element for data in list_of_lists_used_for_scores for element in
                                                 data.split(', ')}
@@ -31,8 +32,8 @@ class FilmData:
         unwatched_film_score = 1
         watched_film_score = 0.2
 
-        for data in self.data_used_for_scores2:
-            if data in likes:
+        for like in likes:
+            if like in self.data_used_for_scores2:
                 if self.watched:
                     self.score += watched_film_score
 
