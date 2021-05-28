@@ -1,8 +1,8 @@
 from film_data_csv_reader import reading_csv
 import binary_search
-import Accounts
 import profiler  # This profiles the system so I can check if anything is too inefficient
 from os import system
+
 # Defining global variables at the module level.
 list_of_film_classes = []
 
@@ -59,13 +59,7 @@ def max_likes(found_film_id, likes_to_save):
     likes_to_save.append(found_film_id)
 
 
-def main():
-    account = Accounts.main_menu()
-    try:
-        account_data = account[2].split(',')
-    except IndexError:
-        account_data = []
-
+def main_algorithm(account_data):
     # A second list is made so films already used to calculate score do not need to be checked again
     likes_to_save: list[int] = [int(x) for x in account_data]
 
@@ -73,6 +67,7 @@ def main():
     list_of_film_classes = reading_csv()  # 0.1 seconds roughly
     film_data_to_set_scores = suggestion_algorithm_single_use(likes_to_save)
     system('cls')  # Clears the screen
+
     while 1:
         suggestion_algorithm(film_data_to_set_scores)
         list_of_film_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
@@ -82,7 +77,4 @@ def main():
 
         quiting, film_data_to_set_scores = selecting_film(likes_to_save)
         if quiting:
-            Accounts.updating_account_data(account, likes_to_save)
-
-
-main()
+            return likes_to_save

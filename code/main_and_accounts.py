@@ -2,6 +2,7 @@ import csv
 import os
 import hashlib
 import Password_validation
+import suggestion_algorithm
 
 script_dir = os.path.dirname(__file__)  # Script directory
 script_dir, _ = script_dir.rsplit('\\', 1)  # Won't run correctly when running this file but will when running main
@@ -78,20 +79,34 @@ def signup():
         signup_username = hashing(input("Username: "))
         signup_password = input("Password: ")
         checks_passed = Password_validation.run_checks(signup_password)  # Password validation
+
     hashed_password = hashing(signup_password)
     writing_account(signup_username, hashed_password)
 
 
-def main_menu():
-    while 1:
-        answer = input("Do you want to login or signup?")
-        if answer.lower() == "signup":
-            signup()
-        elif answer.lower() == "login":
-            account_data = login()
-            if account_data is not None:
-                return account_data
-            else:
-                print("Invalid account details")
+def main():
+    answer = input("Do you want to login or signup?")
+    if answer.lower() == "signup":
+        signup()
+
+    elif answer.lower() == "login":
+
+        account = login()
+        if account is not None:
+            try:
+                account_data = account[2].split(',')
+            except IndexError:
+                account_data = []  # If the account is new it will have no data associated with it
+
+            likes_to_save = suggestion_algorithm.main_algorithm(account_data)
+            # If suggestion_algorithm is exited it means program is ready to close
+            updating_account_data(account, likes_to_save)
+
         else:
-            print("That was not a valid option")
+            print("Invalid account details")
+    else:
+        print("That was not a valid option")
+
+
+while 1:
+    main()
