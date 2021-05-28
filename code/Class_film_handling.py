@@ -30,8 +30,9 @@ class FilmData:
     def set_score(self, likes):  # Setting the score
         unwatched_film_score = 1
         watched_film_score = 0.2
-        for like in likes:
-            if like in self.data_used_for_scores2:
+
+        for data in self.data_used_for_scores2:
+            if data in likes:
                 if self.watched:
                     self.score += watched_film_score
 
