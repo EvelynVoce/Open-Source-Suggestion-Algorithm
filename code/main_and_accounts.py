@@ -34,6 +34,8 @@ def reading_account(login_username, login_password):
 
 def updating_account_data(account, likes_to_save):
     lines_to_write_back = []
+
+    # Updates the current user account data
     with open(accounts_file_path, 'r', newline='') as csvFile:
         reader = csv.reader(csvFile, delimiter=',', quotechar='"')
         for row in reader:
@@ -46,6 +48,7 @@ def updating_account_data(account, likes_to_save):
             else:
                 lines_to_write_back.append(row)
 
+    # Writes all data, including updated user data, back to the accounts file
     with open(accounts_file_path, 'w', newline='') as file:
         writer = csv.writer(file)
         for line in lines_to_write_back:
@@ -85,30 +88,32 @@ def signup():
 
 
 def main():
-    answer = input("Do you want to login or signup?")
-    if answer.lower() == "signup":
-        signup()
+    while 1:
+        answer = input("Do you want to login or signup?")
+        if answer.lower() == "signup":
+            signup()
 
-    elif answer.lower() == "login":
+        elif answer.lower() == "login":
 
-        account = login()
-        if account is not None:
-            try:
-                account_data = account[2].split(',')
-            except IndexError:
-                account_data = []  # If the account is new it will have no data associated with it
+            account = login()
 
-            likes_to_save = suggestion_algorithm.main_algorithm(account_data)
+            if account is not None:
+                try:
+                    account_data = account[2].split(',')
+                except IndexError:
+                    account_data = []  # If the account is new it will have no data associated with it
 
-            # If suggestion_algorithm is exited it means program is ready to close
-            print("UPDATING ACCOUNT DATA")
-            updating_account_data(account, likes_to_save)
+                likes_to_save = suggestion_algorithm.main_algorithm(account_data)
 
+                # If suggestion_algorithm is exited it means program is ready to close
+                print("UPDATING ACCOUNT DATA")
+                updating_account_data(account, likes_to_save)
+
+            else:
+                print("Invalid account details")
         else:
-            print("Invalid account details")
-    else:
-        print("That was not a valid option")
+            print("That was not a valid option")
 
 
-while 1:
+if __name__ == '__main__':
     main()
