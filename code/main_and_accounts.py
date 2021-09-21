@@ -97,20 +97,21 @@ def main():
 
             account = login()
 
-            if account is not None:
-                try:
-                    account_data = account[2].split(',')
-                except IndexError:
-                    account_data = []  # If the account is new it will have no data associated with it
-
-                likes_to_save = suggestion_algorithm.main_algorithm(account_data)
-
-                # If suggestion_algorithm is exited it means program is ready to close
-                print("UPDATING ACCOUNT DATA")
-                updating_account_data(account, likes_to_save)
-
-            else:
+            if account is None:
                 print("Invalid account details")
+                continue
+
+            try:
+                account_data = account[2].split(',')
+            except IndexError:
+                account_data = []  # If the account is new it will have no data associated with it
+
+            likes_to_save = suggestion_algorithm.main_algorithm(account_data)
+
+            # If suggestion_algorithm is exited it means program is ready to close
+            print("UPDATING ACCOUNT DATA")
+            updating_account_data(account, likes_to_save)
+
         else:
             print("That was not a valid option")
 
