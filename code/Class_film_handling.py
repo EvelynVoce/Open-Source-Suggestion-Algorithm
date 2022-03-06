@@ -1,21 +1,22 @@
 class FilmData:
 
     def __init__(self, data):  # Setting the values for class attributes
-        self.id = int(data[0])
-        self.title = data[1]
-        self.date = data[2]
-        self.rating = data[3]
-        self.genres = data[4]
-        self.directors = data[5]
-        self.writers = data[6]
-        self.cast = data[7]
-        self.related_films = data[8]
-        self.score = 0
-        self.watched = False
+        self.id: int = int(data[0])
+        self.title: str = data[1]
+        self.date: str = data[2]
+        # self.rating: str = data[3]
+        # self.genres: str = data[4]
+        # self.directors: str = data[5]
+        # self.writers: str = data[6]
+        # self.cast: str = data[7]
+        # self.related_films: str = data[8]
 
-        list_of_lists_used_for_scores = {self.genres, self.directors, self.writers, self.cast, self.related_films}
+        self.score: int = 0
+        self.watched: bool = False
+        list_of_lists_used_for_scores = {ele for ele in data[3:]}
         self.data_used_for_scores2: set[str] = {element for data in list_of_lists_used_for_scores for element in
-                                                data.split(', ')}
+                                                data.split('; ')}
+        print(self.data_used_for_scores2)
 
     def get_data(self):  # Gets the data for each film the user has liked
         for element in self.data_used_for_scores2:
@@ -29,14 +30,13 @@ class FilmData:
         self.watched = False
 
     def set_score(self, likes):  # Setting the score
-        unwatched_film_score = 1
-        watched_film_score = 0.2
+        unwatched_film_score: int = 1
+        watched_film_score: int = 0.2
 
         for like in likes:
             if like in self.data_used_for_scores2:
                 if self.watched:
                     self.score += watched_film_score
-
                 else:
                     self.score += unwatched_film_score  # Film score goes up 5 times slower
 

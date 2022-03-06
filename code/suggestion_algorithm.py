@@ -1,6 +1,6 @@
 from film_data_csv_reader import reading_csv
 import binary_search
-import profiler  # This profiles the system so I can check if anything is too inefficient
+import profiler  # This profiles the system, so I can check if anything is too inefficient
 from os import system
 
 # Defining global variables at the module level.
@@ -23,6 +23,10 @@ def suggestion_algorithm_single_use(likes_to_save: list[int]):
 def suggestion_algorithm(film_data_to_set_scores):
     for each_film in list_of_film_classes:  # Compare each film with the data of the films the user likes
         each_film.set_score(film_data_to_set_scores)
+
+
+def directing_to_retailer(name: str):
+    pass
 
 
 def selecting_film(likes_to_save):
@@ -71,7 +75,7 @@ def main_algorithm(account_data):
     while 1:
         suggestion_algorithm(film_data_to_set_scores)
         list_of_film_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
-        for x in range(10):
+        for x in range(len(list_of_film_classes)):
             print(list_of_film_classes[x].title + "\t" + str(
                 list_of_film_classes[x].score))  # Faster to concatenate strings than to use ','
 
