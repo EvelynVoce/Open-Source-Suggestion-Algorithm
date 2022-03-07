@@ -2,6 +2,7 @@ from media_data_csv_reader import reading_csv
 import binary_search
 import profiler  # This profiles the system, so I can check if anything is too inefficient
 from os import system
+from SearchClass import SearchData
 
 # Defining global variables at the module level.
 list_of_media_classes = []
@@ -25,8 +26,10 @@ def suggestion_algorithm(media_data_to_set_scores):
         each_item.set_score(media_data_to_set_scores)
 
 
-def directing_to_retailer(name: str):
-    pass
+def directing_to_retailer(title: str):
+    amazon_link: str = "https://www.amazon.com/s?k="
+    full_link = amazon_link + title.replace(" ", "+")
+    return full_link
 
 
 def selecting_media(likes_to_save):
@@ -48,7 +51,10 @@ def selecting_media(likes_to_save):
             list_of_media_classes[found_item].set_viewed()
             found_item_id: int = list_of_media_classes[found_item].id
             max_likes(found_item_id, likes_to_save)
-            return (not user_wants_to_exit), data_of_index
+
+            amazon_link = directing_to_retailer(like)
+            searched_data = SearchData(data_of_index, amazon_link)
+            return (not user_wants_to_exit), searched_data
         else:
             input("That item was not found - press any key to continue")
             system('cls')
@@ -79,6 +85,8 @@ def main_algorithm(account_data):
             print(list_of_media_classes[x].title + "\t" + str(
                 list_of_media_classes[x].score))  # Faster to concatenate strings than to use ','
 
-        quiting, media_data_to_set_scores = selecting_media(likes_to_save)
+        quiting, searched_data = selecting_media(likes_to_save)
+        media_data_to_set_scores = searched_data.data
+        print(searched_data.retail_link)
         if quiting:
             return likes_to_save
