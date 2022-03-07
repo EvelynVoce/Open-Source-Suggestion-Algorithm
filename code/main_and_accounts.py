@@ -18,7 +18,7 @@ def writing_account(signup_username, signup_password):
     else:  # If the file doesn't exist, create the file
         with open(accounts_file_path, 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["Username", "Password", "Watched films"])
+            writer.writerow(["Username", "Password", "Viewed items"])
             writer.writerow([signup_username, signup_password])
 
 
@@ -52,7 +52,7 @@ def updating_account_data(account, likes_to_save):
     with open(accounts_file_path, 'w', newline='') as file:
         writer = csv.writer(file)
         for line in lines_to_write_back:
-            try:  # This is needed because some films may have no likes yet
+            try:  # This is needed because some users may have no likes yet
                 data = line[2]
             except IndexError:
                 data = ""

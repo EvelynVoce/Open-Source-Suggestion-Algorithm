@@ -1,4 +1,4 @@
-class FilmData:
+class MediaData:
 
     def __init__(self, data):  # Setting the values for class attributes
         self.id: int = int(data[0])
@@ -12,33 +12,33 @@ class FilmData:
         # self.related_films: str = data[8]
 
         self.score: int = 0
-        self.watched: bool = False
+        self.viewed: bool = False
         list_of_lists_used_for_scores = {ele for ele in data[3:]}
         self.data_used_for_scores2: set[str] = {element for data in list_of_lists_used_for_scores for element in
                                                 data.split('; ')}
         print(self.data_used_for_scores2)
 
-    def get_data(self):  # Gets the data for each film the user has liked
+    def get_data(self):  # Gets the data for each media the user has liked
         for element in self.data_used_for_scores2:
             yield element
 
-    def set_watched(self):
-        self.watched = True
+    def set_viewed(self):
+        self.viewed = True
 
-    def set_not_watched(self):
-        # If is no longer in the list of likes_to_save then film is considered not watched
-        self.watched = False
+    def set_not_viewed(self):
+        # If is no longer in the list of likes_to_save then media is considered not seen
+        self.viewed = False
 
     def set_score(self, likes):  # Setting the score
-        unwatched_film_score: int = 1
-        watched_film_score: int = 0.2
+        unseen_media_score: int = 1
+        seen_media_score: int = 0.2
 
         for like in likes:
             if like in self.data_used_for_scores2:
-                if self.watched:
-                    self.score += watched_film_score
+                if self.viewed:
+                    self.score += seen_media_score
                 else:
-                    self.score += unwatched_film_score  # Film score goes up 5 times slower
+                    self.score += unseen_media_score  # Media score goes up 5 times slower
 
     # It's important to note that self.score += 0.2 is not the same as self.score /= 5 at the end.
     # Example:
