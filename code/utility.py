@@ -1,6 +1,6 @@
 from tkinter import font
 import tkinter as tk
-
+import hashlib
 
 def underline(label):
     f = font.Font(label, label.cget("font"))  # Create custom font
@@ -22,6 +22,13 @@ def create_back_button(root) -> tk.Button:
     back_button = tk.Button(root, text="back", font=("arial", 10, "bold"), bg=button_col)
     back_button.place(relx=0.90, rely=0.05, relwidth=0.1, relheight=0.05, anchor=tk.CENTER)
     return back_button
+
+
+def hashing(data_to_encrypt) -> str:
+    SALT: str = "AbX2f8Z&1SVFHUB4UZPW"
+    plus_salt: str = data_to_encrypt + SALT
+    hashed_data: str = hashlib.sha256(plus_salt.encode()).hexdigest()
+    return hashed_data
 
 
 class PasswordField:

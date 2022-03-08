@@ -1,6 +1,7 @@
 import tkinter as tk
 import utility
 from signup import signup_screen
+from login import login_screen
 
 bg_col: str = "grey"
 fg_col: str = "white"
@@ -14,17 +15,14 @@ root.config(bg=bg_col)
 root.bind('<Escape>', lambda event: utility.close_app(root))
 
 
-def login_screen():
-    print("Login")
-
-
 def main_screen():
     welcoming = tk.Label(root, text="VMedia", font=("arial", 28, "bold"), fg=fg_col, bg=bg_col)
     welcoming.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
     utility.underline(welcoming)
 
     login_button = tk.Button(root, text="login", font=("arial", 10, "bold"),
-                             bg=button_col, command=lambda: utility.clear_root(root) or login_screen())
+                             bg=button_col, command=lambda: utility.clear_root(root)
+                             or login_screen(root, main_screen))
     login_button.place(relx=0.25, rely=0.35, relwidth=0.2, relheight=0.1)
 
     signup_button = tk.Button(root, text="signup", font=("arial", 10, "bold"),

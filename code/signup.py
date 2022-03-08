@@ -1,6 +1,5 @@
 import tkinter as tk
 import utility
-import hashlib
 import Password_validation
 import csv
 import os
@@ -28,17 +27,10 @@ def writing_account(signup_username, signup_password):
             writer.writerow([signup_username, signup_password])
 
 
-def hashing(data_to_encrypt) -> str:
-    SALT: str = "AbX2f8Z&1SVFHUB4UZPW"
-    plus_salt: str = data_to_encrypt + SALT
-    hashed_data: str = hashlib.sha256(plus_salt.encode()).hexdigest()
-    return hashed_data
-
-
 def create_account(signup_username: str, signup_password: str):
     checks_passed: bool = Password_validation.run_checks(signup_password)  # Password validation
     if checks_passed:
-        hashed_password: str = hashing(signup_password)
+        hashed_password: str = utility.hashing(signup_password)
         writing_account(signup_username, hashed_password)
     else:
         messagebox.showinfo(message="ERROR: Password invalid")
@@ -66,5 +58,5 @@ def signup_screen(root, func):
 
     submit_details = tk.Button(root, text="signup", font=("arial", 10, "bold"),
                                bg=button_col, command=lambda:
-                               create_account(signup_username_entry.get(), signup_password_entry.get()))
+                               create_account(signup_username_entry.get(), signup_password_entry.password_entry.get()))
     submit_details.place(relx=0.20, rely=0.75, relwidth=0.2, relheight=0.05)
