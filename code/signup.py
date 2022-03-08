@@ -4,6 +4,7 @@ import hashlib
 import Password_validation
 import csv
 import os
+from tkinter import messagebox
 
 bg_col: str = "grey"
 fg_col: str = "white"
@@ -39,6 +40,8 @@ def create_account(signup_username: str, signup_password: str):
     if checks_passed:
         hashed_password: str = hashing(signup_password)
         writing_account(signup_username, hashed_password)
+    else:
+        messagebox.showinfo(message="ERROR: Password invalid")
 
 
 def signup_screen(root, func):
@@ -56,8 +59,10 @@ def signup_screen(root, func):
 
     password_label = tk.Label(root, text="Password:", font=("arial", 15, "bold"), fg=fg_col, bg=bg_col)
     password_label.place(relx=0.05, rely=0.35)
-    signup_password_entry = tk.Entry(root, relief=tk.GROOVE, bd=2, font=("arial", 13), show="*")
-    signup_password_entry.place(relx=0.20, rely=0.35, relwidth=0.2, relheight=0.05)
+
+    signup_password_entry = utility.PasswordField(root)
+    signup_show = tk.Button(root, command=lambda: signup_password_entry.switch(), fg=fg_col, bg=bg_col)
+    signup_show.place(relx=0.41, rely=0.35, relwidth=0.025, relheight=0.05)
 
     submit_details = tk.Button(root, text="signup", font=("arial", 10, "bold"),
                                bg=button_col, command=lambda:

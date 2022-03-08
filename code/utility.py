@@ -22,3 +22,18 @@ def create_back_button(root) -> tk.Button:
     back_button = tk.Button(root, text="back", font=("arial", 10, "bold"), bg=button_col)
     back_button.place(relx=0.90, rely=0.05, relwidth=0.1, relheight=0.05, anchor=tk.CENTER)
     return back_button
+
+
+class PasswordField:
+    def __init__(self, root):
+        self.asterisks: bool = True
+        self.password_entry = tk.Entry(root, relief=tk.GROOVE, bd=2, font=("arial", 13), show="*")
+        self.password_entry.place(relx=0.20, rely=0.35, relwidth=0.2, relheight=0.05)
+
+    def switch(self):  # Gets the data for each media the user has liked
+        if self.asterisks:
+            self.password_entry.config(show="")
+            self.asterisks = False
+        else:
+            self.password_entry.config(show="*")
+            self.asterisks = True
