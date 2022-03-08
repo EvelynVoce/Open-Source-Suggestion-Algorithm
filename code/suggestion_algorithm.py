@@ -26,9 +26,9 @@ def suggestion_algorithm(media_data_to_set_scores):
         each_item.set_score(media_data_to_set_scores)
 
 
-def directing_to_retailer(title: str):
+def directing_to_retailer(title: str) -> str:
     amazon_link: str = "https://www.amazon.com/s?k="
-    full_link = amazon_link + title.replace(" ", "+")
+    full_link: str = amazon_link + title.replace(" ", "+")
     return full_link
 
 
