@@ -75,7 +75,7 @@ def main_algorithm(account_data):
     while 1:
         suggestion_algorithm(film_data_to_set_scores)
         list_of_film_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
-        for x in range(len(list_of_film_classes)):
+        for x in range(10):
             print(list_of_film_classes[x].title + "\t" + str(
                 list_of_film_classes[x].score))  # Faster to concatenate strings than to use ','
 

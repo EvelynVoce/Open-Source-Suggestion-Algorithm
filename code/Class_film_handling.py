@@ -15,7 +15,7 @@ class FilmData:
         self.watched: bool = False
         list_of_lists_used_for_scores = {ele for ele in data[3:]}
         self.data_used_for_scores2: set[str] = {element for data in list_of_lists_used_for_scores for element in
-                                                data.split('; ')}
+                                                data.split(', ')}
         print(self.data_used_for_scores2)
 
     def get_data(self):  # Gets the data for each film the user has liked
