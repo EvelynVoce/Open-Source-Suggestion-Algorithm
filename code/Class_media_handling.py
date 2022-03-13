@@ -15,7 +15,7 @@ class MediaData:
         self.viewed: bool = False
         list_of_lists_used_for_scores = {ele for ele in data[3:]}
         self.data_used_for_scores2: set[str] = {element for data in list_of_lists_used_for_scores for element in
-                                                data.split('; ')}
+                                                data.split(', ')}
 
     def get_data(self):  # Gets the data for each media the user has liked
         for element in self.data_used_for_scores2:

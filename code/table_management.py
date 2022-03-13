@@ -1,5 +1,5 @@
 from tkinter import ttk
-from media_data_csv_reader import reading_csv
+
 
 
 def create_table(root) -> ttk.Treeview:
@@ -19,7 +19,6 @@ def create_table(root) -> ttk.Treeview:
         table.column(column, minwidth=0, width=100)
 
     table.place(relx=0.1, rely=0.15, relwidth=0.80, relheight=0.8)
-    insert_media_table(table)
     return table
 
 
@@ -29,6 +28,6 @@ def set_media_table(table) -> tuple:
     return headings
 
 
-def insert_media_table(table):
-    for x, media_details in enumerate(reading_csv()):
+def insert_media_table(table, list_of_media_classes):
+    for x, media_details in enumerate(list_of_media_classes):
         table.insert(parent='', index='end', iid=x, text=x, values=[media_details.title, media_details.date])

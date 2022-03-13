@@ -2,8 +2,8 @@ import tkinter as tk
 import utility
 import csv
 import os
-import suggestion_algorithm
 from tkinter import messagebox
+import main_GUI
 
 bg_col: str = "grey"
 fg_col: str = "white"
@@ -52,15 +52,16 @@ def updating_account_data(account, likes_to_save):
     quit()
 
 
-def login_account(login_username, login_password):
+def login_account(root, login_username, login_password):
     account_found = reading_account(login_username, utility.hashing(login_password))
     if account_found is not None:
         try:
+            print(account_found)
             account_data = account_found[2].split(',')
         except IndexError:
             account_data = []  # If the account is new it will have no data associated with it
 
-        likes_to_save = suggestion_algorithm.main_algorithm(account_data)
+        likes_to_save = main_GUI.suggestion_gui(root, account_data)
 
         # If suggestion_algorithm is exited it means the program is ready to close
         print("UPDATING ACCOUNT DATA")
@@ -90,5 +91,5 @@ def login_screen(root, func):
     login_show.place(relx=0.41, rely=0.35, relwidth=0.025, relheight=0.05)
     login_submission = tk.Button(root, text="login", font=("arial", 10, "bold"),
                                  bg=button_col, command=lambda:
-                                 login_account(username_entry.get(), login_password_entry.password_entry.get()))
+                                 login_account(root, username_entry.get(), login_password_entry.password_entry.get()))
     login_submission.place(relx=0.20, rely=0.65, relwidth=0.28, relheight=0.1)

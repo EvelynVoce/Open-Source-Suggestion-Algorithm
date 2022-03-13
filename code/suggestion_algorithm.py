@@ -75,18 +75,20 @@ def main_algorithm(account_data):
 
     global list_of_media_classes
     list_of_media_classes = reading_csv()  # 0.1 seconds roughly
+
     media_data_to_set_scores = suggestion_algorithm_single_use(likes_to_save)
     system('cls')  # Clears the screen
 
     while 1:
         suggestion_algorithm(media_data_to_set_scores)
         list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
-        for x in range(len(list_of_media_classes)):
+        for x in range(10):
             print(list_of_media_classes[x].title + "\t" + str(
                 list_of_media_classes[x].score))  # Faster to concatenate strings than to use ','
 
         quiting, searched_data = selecting_media(likes_to_save)
-        media_data_to_set_scores = searched_data.data
-        print(searched_data.retail_link)
-        if quiting:
+        if not quiting:
+            media_data_to_set_scores = searched_data.data
+            print(searched_data.retail_link)
+        else:
             return likes_to_save
