@@ -34,16 +34,14 @@ def directing_to_retailer(title: str) -> str:
     return full_link
 
 
-def selecting_media(likes_to_save):
-    like = input("\nWhat media do you like? (Enter Exit to quit)").lower()
-    system('cls')
+def selecting_media(likes_to_save, like):
     if like == "exit":
         print("exit engaged")
         return None
 
     # Binary Search
     list_of_media_classes.sort(key=lambda x: x.title)  # Sort by title so binary search can be performed
-    found_item = binary_search.binary_search(list_of_media_classes, like, len(list_of_media_classes) - 1)
+    found_item = binary_search.binary_search(list_of_media_classes, like.lower(), len(list_of_media_classes) - 1)
     if found_item is not None:
         # data_of_index can be a set here because duplicates aren't relevant when only one media is considered
         data_of_index: set = {iterator for iterator in list_of_media_classes[found_item].get_data()}
@@ -70,7 +68,6 @@ def max_likes(found_item_id, likes_to_save):
 def main_algorithm(local_media_classes, media_data_to_set_scores, likes_to_save):
     global list_of_media_classes
     list_of_media_classes = local_media_classes  # 0.1 seconds roughly
-    print(f"{list_of_media_classes=}")
 
     suggestion_algorithm(media_data_to_set_scores)
     list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
