@@ -27,11 +27,15 @@ def writing_account(signup_username, signup_password):
             writer.writerow([signup_username, signup_password])
 
 
-def create_account(signup_username: str, signup_password: str):
+def create_account(root, go_back, signup_username: str, signup_password: str):
     checks_passed: bool = Password_validation.run_checks(signup_password)  # Password validation
     if checks_passed:
         hashed_password: str = utility.hashing(signup_password)
         writing_account(signup_username, hashed_password)
+        messagebox.showinfo(message="Account created")
+        utility.clear_root(root)
+        go_back()
+
     else:
         messagebox.showinfo(message="ERROR: Password invalid")
 
@@ -58,5 +62,7 @@ def signup_screen(root, func):
 
     submit_details = tk.Button(root, text="signup", font=("arial", 10, "bold"),
                                bg=button_col, command=lambda:
-                               create_account(signup_username_entry.get(), signup_password_entry.password_entry.get()))
+                               create_account(root, func,
+                                              signup_username_entry.get(),
+                                              signup_password_entry.password_entry.get()))
     submit_details.place(relx=0.20, rely=0.75, relwidth=0.2, relheight=0.05)
