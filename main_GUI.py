@@ -56,7 +56,11 @@ def suggestion_gui(root, account_data):
 
     search_button = tk.Button(root, text="Search", font=("arial", 10, "bold"),
                               bg=button_col, command=lambda: search(table, list_of_media_classes, search_bar.get()))
-    search_button.place(relx=0.8, rely=0.15, relwidth=0.1, relheight=0.025)
+    search_button.place(relx=0.8, rely=0.15, relwidth=0.05, relheight=0.025)
+
+    show_all_button = tk.Button(root, text="Show All", font=("arial", 10, "bold"),
+                                bg=button_col, command=lambda: search(table, list_of_media_classes, ""))
+    show_all_button.place(relx=0.86, rely=0.15, relwidth=0.05, relheight=0.025)
 
     # A second list is made so media already used to calculate score do not need to be checked again
     print(f"{account_data=}")
