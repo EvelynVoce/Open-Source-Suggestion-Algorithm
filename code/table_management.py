@@ -1,7 +1,6 @@
 from tkinter import ttk
 
 
-
 def create_table(root) -> ttk.Treeview:
     table = ttk.Treeview(root)
     style = ttk.Style(table)
@@ -18,7 +17,6 @@ def create_table(root) -> ttk.Treeview:
         table.heading(column, text=heading)
         table.column(column, minwidth=0, width=100)
 
-    table.place(relx=0.1, rely=0.15, relwidth=0.80, relheight=0.8)
     return table
 
 

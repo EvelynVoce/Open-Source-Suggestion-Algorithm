@@ -29,8 +29,8 @@ class MediaData:
         self.viewed = False
 
     def set_score(self, likes):  # Setting the score
-        unseen_media_score: int = 1
-        seen_media_score: int = 0.2
+        unseen_media_score: int = 5
+        seen_media_score: int = 1
 
         for like in likes:
             if like in self.data_used_for_scores2:
