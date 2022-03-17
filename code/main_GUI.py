@@ -12,7 +12,21 @@ button_col: str = "dark grey"
 global_likes_to_save = []
 
 
-def select_media(table, likes_to_save, list_of_media_classes):
+def pop_up_window(root, retail_link):
+    pop_up = tk.Toplevel(root, bg=bg_col)
+    pop_up.title = "Purchase item"
+    pop_up.geometry("600x400")
+
+    page_title = tk.Label(pop_up, text="VMedia: Retail assistant", font=("arial", 15, "bold"), fg=fg_col, bg=bg_col)
+    page_title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
+    utility.underline(page_title)
+
+    text_box = tk.Text(pop_up, wrap=tk.WORD, cursor="arrow", bd=8, font=("arial", 15), state=tk.NORMAL)
+    text_box.place(relx=0.1, rely=0.2, relwidth=0.8, relheight=0.1)
+    text_box.insert(tk.INSERT, retail_link)
+
+
+def select_media(root, table, likes_to_save, list_of_media_classes):
     cur_item = table.focus()
     row_data: dict = table.item(cur_item)
     item_values: list = row_data['values']
@@ -21,6 +35,8 @@ def select_media(table, likes_to_save, list_of_media_classes):
     global global_likes_to_save
     global_likes_to_save = likes_to_save
     selected_data = media_selected.data
+
+    pop_up_window(root, media_selected.retail_link)  # Display link to buy object
     updating_gui(table, selected_data, likes_to_save, list_of_media_classes)
 
 
@@ -54,7 +70,8 @@ def suggestion_gui(root, account_data, account_found):
     scroll_bar_y.place(relx=0.9, rely=0.2, relheight=0.8)
 
     select_button = tk.Button(root, text="Select media", font=("arial", 10, "bold"),
-                              bg=button_col, command=lambda: select_media(table, likes_to_save, list_of_media_classes))
+                              bg=button_col, command=lambda:
+                              select_media(root, table, likes_to_save, list_of_media_classes))
     select_button.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
     search_bar = tk.Entry(root, relief=tk.GROOVE, bd=2, font=("arial", 13))
