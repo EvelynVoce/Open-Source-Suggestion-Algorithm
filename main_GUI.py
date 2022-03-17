@@ -3,10 +3,13 @@ import utility
 from table_management import create_table, insert_media_table
 from media_data_csv_reader import reading_csv
 from suggestion_algorithm2 import main_algorithm, suggestion_algorithm_single_use, selecting_media
+from main_and_accounts import updating_account_data
 
 bg_col: str = "grey"
 fg_col: str = "white"
 button_col: str = "dark grey"
+
+global_likes_to_save = []
 
 
 def select_media(table, likes_to_save, list_of_media_classes):
@@ -14,7 +17,9 @@ def select_media(table, likes_to_save, list_of_media_classes):
     row_data: dict = table.item(cur_item)
     item_values: list = row_data['values']
     selected_title = item_values[0]
-    media_selected = selecting_media(likes_to_save, selected_title)
+    media_selected, likes_to_save = selecting_media(likes_to_save, selected_title)
+    global global_likes_to_save
+    global_likes_to_save = likes_to_save
     selected_data = media_selected.data
     updating_gui(table, selected_data, likes_to_save, list_of_media_classes)
 
@@ -31,12 +36,13 @@ def updating_gui(table, media_data_to_set_scores, likes_to_save, list_of_media_c
 
 
 def search(table, list_of_media_classes, searched_item):
-    matched_searches = [media for media in list_of_media_classes if searched_item in media.title]
     clearing_table(table)
+    matched_searches = [media for media in list_of_media_classes if searched_item in media.title]
     insert_media_table(table, matched_searches)
 
 
-def suggestion_gui(root, account_data):
+def suggestion_gui(root, account_data, account_found):
+    print(f"{account_data = }")
     utility.clear_root(root)
     title = tk.Label(root, text="VMedia: Suggestions", font=("arial", 28, "bold"), fg=fg_col, bg=bg_col)
     title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
@@ -62,9 +68,16 @@ def suggestion_gui(root, account_data):
                                 bg=button_col, command=lambda: search(table, list_of_media_classes, ""))
     show_all_button.place(relx=0.86, rely=0.15, relwidth=0.05, relheight=0.025)
 
+    exit_button = tk.Button(root, text="Exit", font=("arial", 10, "bold"),
+                            bg=button_col, command=lambda: updating_account_data(account_found, likes_to_save))
+    exit_button.place(relx=0.8, rely=0.05, relwidth=0.1, relheight=0.05)
+
     # A second list is made so media already used to calculate score do not need to be checked again
-    print(f"{account_data=}")
+    if account_data == ['']:
+        account_data = []
     likes_to_save: list[int] = [int(x) for x in account_data]
+    global global_likes_to_save
+    global_likes_to_save = likes_to_save
 
     list_of_media_classes = reading_csv()  # 0.1 seconds roughly
     print(len(list_of_media_classes))

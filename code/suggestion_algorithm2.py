@@ -47,11 +47,11 @@ def selecting_media(likes_to_save, like):
         data_of_index: set = {iterator for iterator in list_of_media_classes[found_item].get_data()}
         list_of_media_classes[found_item].set_viewed()
         found_item_id: int = list_of_media_classes[found_item].id
-        max_likes(found_item_id, likes_to_save)
+        likes_to_save = max_likes(found_item_id, likes_to_save)
 
         amazon_link = directing_to_retailer(like)
         searched_data = SearchData(data_of_index, amazon_link)
-        return searched_data
+        return searched_data, likes_to_save
     else:
         system('cls')
 
@@ -63,6 +63,7 @@ def max_likes(found_item_id, likes_to_save):
         list_of_media_classes[likes_to_save[0]].set_not_viewed()
         likes_to_save.pop(0)
     likes_to_save.append(found_item_id)
+    return likes_to_save
 
 
 def main_algorithm(local_media_classes, media_data_to_set_scores, likes_to_save):

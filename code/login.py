@@ -54,6 +54,7 @@ def updating_account_data(account, likes_to_save):
 
 def login_account(root, login_username, login_password):
     account_found = reading_account(login_username, utility.hashing(login_password))
+    print(account_found)
     if account_found is not None:
         try:
             print(account_found)
@@ -61,7 +62,7 @@ def login_account(root, login_username, login_password):
         except IndexError:
             account_data = []  # If the account is new it will have no data associated with it
 
-        likes_to_save = main_GUI.suggestion_gui(root, account_data)
+        likes_to_save = main_GUI.suggestion_gui(root, account_data, account_found)
 
         # If suggestion_algorithm is exited it means the program is ready to close
         print("UPDATING ACCOUNT DATA")

@@ -39,6 +39,7 @@ def updating_account_data(account, likes_to_save):
     with open(accounts_file_path, 'r', newline='') as csvFile:
         reader = csv.reader(csvFile, delimiter=',', quotechar='"')
         for row in reader:
+            print(account)
             if row[0] == account[0] and row[1] == account[1]:
                 string_of_likes = ""
                 for like in range(len(likes_to_save) - 1):
@@ -109,8 +110,8 @@ def main():
             likes_to_save = suggestion_algorithm.main_algorithm(account_data)
 
             # If suggestion_algorithm is exited it means program is ready to close
-            print("UPDATING ACCOUNT DATA")
-            updating_account_data(account, likes_to_save)
+            # print("UPDATING ACCOUNT DATA")
+            # updating_account_data(account, likes_to_save)
 
         else:
             print("That was not a valid option")
