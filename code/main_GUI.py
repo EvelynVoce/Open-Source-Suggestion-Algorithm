@@ -4,6 +4,7 @@ from table_management import create_table, insert_media_table
 from media_data_csv_reader import reading_csv
 from suggestion_algorithm2 import main_algorithm, suggestion_algorithm_single_use, selecting_media
 from main_and_accounts import updating_account_data
+from filters import filters, Filters
 
 bg_col: str = "grey"
 fg_col: str = "white"
@@ -51,14 +52,21 @@ def updating_gui(table, media_data_to_set_scores, likes_to_save, list_of_media_c
     insert_media_table(table, ordered_media_classes)
 
 
-def search(table, list_of_media_classes, searched_item):
+def search(table, list_of_media_classes, searched_item, filter_obj):
+
+    filter_list: list[str] = filter_obj.get_filters()
+
     clearing_table(table)
-    matched_searches = [media for media in list_of_media_classes if searched_item in media.title]
-    insert_media_table(table, matched_searches)
+    filtered_data = [media for media in list_of_media_classes if searched_item in media.title]
+
+    if filter_list:
+        for chosen_filter in filter_list:
+            filtered_data = [media for media in filtered_data if chosen_filter in media.genres]
+
+    insert_media_table(table, filtered_data)
 
 
 def suggestion_gui(root, account_data, account_found):
-    print(f"{account_data = }")
     utility.clear_root(root)
     title = tk.Label(root, text="VMedia: Suggestions", font=("arial", 28, "bold"), fg=fg_col, bg=bg_col)
     title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
@@ -77,8 +85,8 @@ def suggestion_gui(root, account_data, account_found):
     search_bar = tk.Entry(root, relief=tk.GROOVE, bd=2, font=("arial", 13))
     search_bar.place(relx=0.1, rely=0.15, relwidth=0.68, relheight=0.025)
 
-    search_button = tk.Button(root, text="Search", font=("arial", 10, "bold"),
-                              bg=button_col, command=lambda: search(table, list_of_media_classes, search_bar.get()))
+    search_button = tk.Button(root, text="Search", font=("arial", 10, "bold"), bg=button_col,
+                              command=lambda: search(table, list_of_media_classes, search_bar.get(), filter_obj))
     search_button.place(relx=0.8, rely=0.15, relwidth=0.05, relheight=0.025)
 
     show_all_button = tk.Button(root, text="Show All", font=("arial", 10, "bold"),
@@ -89,17 +97,19 @@ def suggestion_gui(root, account_data, account_found):
                             bg=button_col, command=lambda: updating_account_data(account_found, likes_to_save))
     exit_button.place(relx=0.8, rely=0.05, relwidth=0.1, relheight=0.05)
 
-    # A second list is made so media already used to calculate score do not need to be checked again
+    filter_obj = Filters()
+    filters(root, filter_obj)
+
     if account_data == ['']:
         account_data = []
+
+    # A second list is made so media already used to calculate score do not need to be checked again
     likes_to_save: list[int] = [int(x) for x in account_data]
     global global_likes_to_save
     global_likes_to_save = likes_to_save
 
-    list_of_media_classes = reading_csv()  # 0.1 seconds roughly
-    print(len(list_of_media_classes))
+    list_of_media_classes = reading_csv()
     media_data_to_set_scores = suggestion_algorithm_single_use(list_of_media_classes, likes_to_save)
 
     ordered_media_classes = main_algorithm(list_of_media_classes, media_data_to_set_scores, likes_to_save)
     insert_media_table(table, ordered_media_classes)
-

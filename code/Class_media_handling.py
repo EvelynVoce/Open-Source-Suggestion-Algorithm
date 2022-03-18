@@ -4,8 +4,10 @@ class MediaData:
         self.id: int = int(data[0])
         self.title: str = data[1]
         self.date: str = data[2]
+
+        # If developers need to access columns specifically by name they can name them as variables here
         # self.rating: str = data[3]
-        # self.genres: str = data[4]
+        self.genres: str = data[4]
         # self.directors: str = data[5]
         # self.writers: str = data[6]
         # self.cast: str = data[7]
