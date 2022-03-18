@@ -27,7 +27,7 @@ def pop_up_window(root, retail_link):
     text_box.insert(tk.INSERT, retail_link)
 
 
-def select_media(root, table, likes_to_save, list_of_media_classes):
+def select_media(root, table, likes_to_save, list_of_media_classes, searched_item, filter_obj):
     cur_item = table.focus()
     row_data: dict = table.item(cur_item)
     item_values: list = row_data['values']
@@ -38,7 +38,8 @@ def select_media(root, table, likes_to_save, list_of_media_classes):
     selected_data = media_selected.data
 
     pop_up_window(root, media_selected.retail_link)  # Display link to buy object
-    updating_gui(table, selected_data, likes_to_save, list_of_media_classes)
+
+    updating_gui(table, selected_data, likes_to_save, list_of_media_classes, searched_item, filter_obj)
 
 
 def clearing_table(table):
@@ -46,22 +47,22 @@ def clearing_table(table):
         table.delete(x)
 
 
-def updating_gui(table, media_data_to_set_scores, likes_to_save, list_of_media_classes):
+def updating_gui(table, media_data_to_set_scores, likes_to_save, list_of_media_classes, searched_item, filter_obj):
     clearing_table(table)
     ordered_media_classes = main_algorithm(list_of_media_classes, media_data_to_set_scores, likes_to_save)
-    insert_media_table(table, ordered_media_classes)
+    search(table, ordered_media_classes, searched_item, filter_obj)
 
 
-def search(table, list_of_media_classes, searched_item, filter_obj):
-
-    filter_list: list[str] = filter_obj.get_filters()
+def search(table, list_of_media_classes, searched_item, filter_obj=None):
 
     clearing_table(table)
     filtered_data = [media for media in list_of_media_classes if searched_item in media.title]
 
-    if filter_list:
-        for chosen_filter in filter_list:
-            filtered_data = [media for media in filtered_data if chosen_filter in media.genres]
+    if filter_obj is not None:
+        filter_list: list[str] = filter_obj.get_filters()
+        if filter_list:
+            for chosen_filter in filter_list:
+                filtered_data = [media for media in filtered_data if chosen_filter in media.genres]
 
     insert_media_table(table, filtered_data)
 
@@ -79,7 +80,8 @@ def suggestion_gui(root, account_data, account_found):
 
     select_button = tk.Button(root, text="Select media", font=("arial", 10, "bold"),
                               bg=button_col, command=lambda:
-                              select_media(root, table, likes_to_save, list_of_media_classes))
+                              select_media(root, table, likes_to_save, list_of_media_classes,
+                                           search_bar.get(), filter_obj))
     select_button.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
     search_bar = tk.Entry(root, relief=tk.GROOVE, bd=2, font=("arial", 13))
