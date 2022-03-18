@@ -1,17 +1,13 @@
-from media_data_csv_reader import reading_csv
 import binary_search
 import profiler  # This profiles the system, so I can check if anything is too inefficient
-from os import system
 from SearchClass import SearchData
+from media_data_csv_reader import reading_csv
 
 # Defining global variables at the module level.
-list_of_media_classes = []
-
+list_of_media_classes = reading_csv()
 
 # @profiler.profile
-def suggestion_algorithm_single_use(local_media_classes, likes_to_save: list[int]):
-    global list_of_media_classes
-    list_of_media_classes = local_media_classes
+def suggestion_algorithm_single_use(likes_to_save: list[int]):
     # This includes features that only need to be run at the start like setting saved media to seen
     data_of_index: list[str] = [data for like in likes_to_save for data in list_of_media_classes[like].get_data()]
     for like in likes_to_save:
@@ -35,14 +31,10 @@ def directing_to_retailer(title: str) -> str:
 
 
 def selecting_media(likes_to_save, like):
-    if like == "exit":
-        print("exit engaged")
-        return None
-
-    # Binary Search
     list_of_media_classes.sort(key=lambda x: x.title)  # Sort by title so binary search can be performed
     found_item = binary_search.binary_search(list_of_media_classes, like.lower(), len(list_of_media_classes) - 1)
     if found_item is not None:
+        print("I MADE IT")
         # data_of_index can be a set here because duplicates aren't relevant when only one media is considered
         data_of_index: set = {iterator for iterator in list_of_media_classes[found_item].get_data()}
         list_of_media_classes[found_item].set_viewed()
@@ -51,9 +43,8 @@ def selecting_media(likes_to_save, like):
 
         amazon_link = directing_to_retailer(like)
         searched_data = SearchData(data_of_index, amazon_link)
+        print(searched_data, likes_to_save)
         return searched_data, likes_to_save
-    else:
-        system('cls')
 
 
 def max_likes(found_item_id, likes_to_save):
@@ -66,16 +57,7 @@ def max_likes(found_item_id, likes_to_save):
     return likes_to_save
 
 
-def main_algorithm(local_media_classes, media_data_to_set_scores, likes_to_save):
-    global list_of_media_classes
-    list_of_media_classes = local_media_classes  # 0.1 seconds roughly
-
+def main_algorithm(media_data_to_set_scores):
     suggestion_algorithm(media_data_to_set_scores)
     list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
     return list_of_media_classes
-
-    # searched_data = selecting_media(likes_to_save)
-    # media_data_to_set_scores = searched_data.data
-    # print(searched_data.retail_link)
-    # if quiting:
-    #     return likes_to_save
