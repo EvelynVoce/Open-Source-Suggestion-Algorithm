@@ -6,6 +6,7 @@ from media_data_csv_reader import reading_csv
 # Defining global variables at the module level.
 list_of_media_classes = reading_csv()
 
+
 # @profiler.profile
 def suggestion_algorithm_single_use(likes_to_save: list[int]):
     # This includes features that only need to be run at the start like setting saved media to seen

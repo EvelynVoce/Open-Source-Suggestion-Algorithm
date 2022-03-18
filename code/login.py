@@ -1,7 +1,6 @@
 import tkinter as tk
 import utility
-import csv
-import os
+from account_handling import reading_account
 from tkinter import messagebox
 import main_GUI
 
@@ -9,55 +8,11 @@ bg_col: str = "grey"
 fg_col: str = "white"
 button_col: str = "dark grey"
 
-script_dir = os.path.dirname(__file__)  # Script directory
-script_dir, _ = script_dir.rsplit('\\', 1)  # Won't run correctly when running this file but will when running main
-accounts_file_path = os.path.join(script_dir, 'user_data.csv')
-
-
-def reading_account(login_username, login_password):
-    if os.path.isfile(accounts_file_path):
-        with open(accounts_file_path) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=',')  # Read each line of the user_data csv
-            next(csv_reader)  # Skip the first line because it's just the headings for the columns
-            for row in csv_reader:
-                if row[0] == login_username and row[1] == login_password:
-                    return row
-
-
-def updating_account_data(account, likes_to_save):
-    lines_to_write_back = []
-
-    # Updates the current user account data
-    with open(accounts_file_path, 'r', newline='') as csvFile:
-        reader = csv.reader(csvFile, delimiter=',', quotechar='"')
-        for row in reader:
-            if row[0] == account[0] and row[1] == account[1]:
-                string_of_likes = ""
-                for like in range(len(likes_to_save) - 1):
-                    string_of_likes += str(likes_to_save[like]) + ","
-                string_of_likes += str(likes_to_save[-1])
-                lines_to_write_back.append((row[0], row[1], string_of_likes))
-            else:
-                lines_to_write_back.append(row)
-
-    # Writes all data, including updated user data, back to the accounts file
-    with open(accounts_file_path, 'w', newline='') as file:
-        writer = csv.writer(file)
-        for line in lines_to_write_back:
-            try:  # This is needed because some users may have no likes yet
-                data = line[2]
-            except IndexError:
-                data = ""
-            writer.writerow([line[0], line[1], data])
-    quit()
-
 
 def login_account(root, login_username, login_password):
     account_found = reading_account(login_username, utility.hashing(login_password))
-    print(account_found)
     if account_found is not None:
         try:
-            print(account_found)
             account_data = account_found[2].split(',')
         except IndexError:
             account_data = []  # If the account is new it will have no data associated with it
