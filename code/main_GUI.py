@@ -73,9 +73,9 @@ def suggestion_gui(root, account_data, account_found):
     utility.underline(title)
 
     table = create_table(root)
-    table.place(relx=0.1, rely=0.2, relwidth=0.80, relheight=0.75)
+    table.place(relx=0.1, rely=0.2, relwidth=0.40, relheight=0.75)
     scroll_bar_y = tk.Scrollbar(root, command=table.yview)
-    scroll_bar_y.place(relx=0.9, rely=0.2, relheight=0.8)
+    scroll_bar_y.place(relx=0.5, rely=0.2, relheight=0.75)
 
     select_button = tk.Button(root, text="Select media", font=("arial", 10, "bold"),
                               bg=button_col, command=lambda:

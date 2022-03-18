@@ -28,4 +28,4 @@ def set_media_table(table) -> tuple:
 
 def insert_media_table(table, list_of_media_classes):
     for x, media_details in enumerate(list_of_media_classes):
-        table.insert(parent='', index='end', iid=x, text=x, values=[media_details.title, media_details.score])
+        table.insert(parent='', index='end', iid=x, text=x, values=[media_details.title, media_details.date])
