@@ -63,7 +63,7 @@ def updating_gui(table, media_data_to_set_scores, searched_item, filter_obj):
 def search(table, searched_item, filter_obj=None):
 
     clearing_table(table)
-    filtered_data = [media for media in list_of_media_classes if searched_item in media.title]
+    filtered_data = [media for media in list_of_media_classes if searched_item.lower() in media.title.lower()]
 
     if filter_obj is not None:
         filter_list: list[str] = filter_obj.get_filters()
@@ -109,6 +109,7 @@ def suggestion_gui(root, account_data, account_found):
     filter_obj = Filters()
     filters(root, filter_obj)
 
+    print(len(account_data))
     if account_data == ['']:
         account_data = []
 
