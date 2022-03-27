@@ -5,12 +5,17 @@ from table_management import create_table, insert_media_table
 from suggestion_algorithm2 import main_algorithm, suggestion_algorithm_single_use, selecting_media, list_of_media_classes
 from account_handling import updating_account_data
 from filters import filters, Filters
+import webbrowser
 
 bg_col: str = "grey"
 fg_col: str = "white"
 button_col: str = "dark grey"
 
 global_likes_to_save = []
+
+
+def link_callback(event):
+    webbrowser.open_new(event.widget.cget("text"))
 
 
 def pop_up_window(root, retail_link):
@@ -22,9 +27,10 @@ def pop_up_window(root, retail_link):
     page_title.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
     utility.underline(page_title)
 
-    text_box = tk.Text(pop_up, wrap=tk.WORD, cursor="arrow", bd=8, font=("arial", 15), state=tk.NORMAL)
-    text_box.place(relx=0.1, rely=0.2, relwidth=0.8, relheight=0.1)
-    text_box.insert(tk.INSERT, retail_link)
+    link_label = tk.Label(pop_up, cursor="hand2", text=retail_link,
+                          font=("arial", 15), fg="blue", bg=bg_col, wraplength=500)
+    link_label.place(relx=0.1, rely=0.2, relwidth=0.8, relheight=0.2)
+    link_label.bind("<Button-1>", link_callback)
 
 
 def select_media(root, table, likes_to_save, searched_item, filter_obj):
