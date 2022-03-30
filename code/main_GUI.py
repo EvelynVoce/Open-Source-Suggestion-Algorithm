@@ -124,7 +124,7 @@ def suggestion_gui(root, account_data, account_found):
     global global_likes_to_save
     global_likes_to_save = likes_to_save
 
-    media_data_to_set_scores = suggestion_algorithm_single_use(likes_to_save)
+    media_data_to_set_scores = suggestion_algorithm_single_use(likes_to_save, "films_data3.csv")
 
-    ordered_media_classes = main_algorithm(media_data_to_set_scores)
+    ordered_media_classes = main_algorithm(media_data_to_set_scores, "films_data3.csv")
     insert_media_table(table, ordered_media_classes)
