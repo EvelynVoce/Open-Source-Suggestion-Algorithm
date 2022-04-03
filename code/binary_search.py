@@ -1,6 +1,9 @@
 def binary_search(list_of_media_objects, like, ub, lb=0):
     mid = lb + (ub - lb) // 2
     # If the lower bound is greater than upper bound then the item doesn't exist in the list
+    # print(list_of_media_objects[mid].title.lower())
+    # print(list_of_media_objects[ub].title.lower())
+    # print(list_of_media_objects[lb].title.lower())
     if lb > ub:
         return None
     # When ub-lb = 1 the first item will always be chosen.
