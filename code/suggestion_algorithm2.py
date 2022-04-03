@@ -4,15 +4,12 @@ from SearchClass import SearchData
 from media_data_csv_reader import reading_csv
 
 # Defining global variables at the module level.
-list_of_media_classes = []
+list_of_media_classes = reading_csv()
 
 
 # @profiler.profile
-def suggestion_algorithm_single_use(likes_to_save: list[int], path):
+def suggestion_algorithm_single_use(likes_to_save: list[int]):
     # This includes features that only need to be run at the start like setting saved media to seen
-    global list_of_media_classes
-    list_of_media_classes = reading_csv(path)
-
     data_of_index: list[str] = [data for like in likes_to_save for data in list_of_media_classes[like].get_data()]
     for like in likes_to_save:
         # Media seen checked here, not in selecting_media so media can be set to seen after program is closed
@@ -61,31 +58,7 @@ def max_likes(found_item_id, likes_to_save):
     return likes_to_save
 
 
-def main_algorithm(media_data_to_set_scores, path_to_dataset):
-    global list_of_media_classes
-    list_of_media_classes = reading_csv(path_to_dataset)
-
+def main_algorithm(media_data_to_set_scores):
     suggestion_algorithm(media_data_to_set_scores)
     list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
     return list_of_media_classes
-
-
-# # Below is the source code to make this algorithm run in the console
-# def example_search(users_likes):
-#     selected_film = input("name a film")
-#     selecting_media(users_likes, selected_film)
-#
-#
-# def example_main(users_likes, example_path):
-#     liked_data = suggestion_algorithm_single_use(users_likes, path)
-#     while True:
-#         suggestion_algorithm(liked_data)
-#         list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
-#         example_search(users_likes)
-#
-#
-# if __name__ == "__main__":
-#     users_likes = [3, 5, 31]  # Example user likes data
-#     path: str = 'films_data2.csv'  # Example path
-#
-#     example_main(users_likes, path)

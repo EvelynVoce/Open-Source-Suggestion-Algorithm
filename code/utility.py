@@ -2,7 +2,6 @@ from tkinter import font
 import tkinter as tk
 import hashlib
 
-
 def underline(label):
     f = font.Font(label, label.cget("font"))  # Create custom font
     f.configure(underline=True)  # Underline font
