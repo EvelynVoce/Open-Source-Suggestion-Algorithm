@@ -53,33 +53,6 @@ def max_likes(found_item_id, likes_to_save, list_of_media_classes):
     return likes_to_save
 
 
-def output_relevant_items(list_of_media_classes):
+def get_items(list_of_media_classes):
     list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Sorting items by score
-    for item in list_of_media_classes[:10]:  # Print items in order of predicted preference
-        print(item.title, item.score)
-
-
-# Below is a basic example of how to integrate the algorithm into existing software.
-# Change eg_user_likes with a list of ID's for items the user likes.
-# Change eg_path with a path to the csv with all items
-
-def example_main(users_likes: list[int], dataset_path: str):
-    list_of_media_classes, liked_data = suggestion_algorithm_single_use(users_likes, dataset_path)  # Get data from liked items
-    while True:
-        suggestion_algorithm(list_of_media_classes, liked_data)  # Set item scores based on liked data
-        output_relevant_items(list_of_media_classes)
-
-        selected_film = input("name a film")
-        try:  # Get data for item except when item not found
-            data_and_link, id_to_save = selecting_media(users_likes, selected_film, list_of_media_classes)
-            # id_to_save can be added to user data and stored in the database to save user interests between sessions
-            liked_data = data_and_link.data
-            print(data_and_link.retail_link)  # link to purchase selected item
-        except TypeError:
-            pass
-
-
-if __name__ == "__main__":
-    eg_user_likes: list[int] = []  # Example user likes data
-    path: str = "films_data2.csv"
-    example_main(eg_user_likes, path)
+    return list_of_media_classes
