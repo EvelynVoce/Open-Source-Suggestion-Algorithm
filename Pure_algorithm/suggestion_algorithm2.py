@@ -1,14 +1,12 @@
 import binary_search
-import profiler  # This profiles the system, so I can check if anything is too inefficient
 from SearchClass import SearchData
 from media_data_csv_reader import reading_csv
 
-# Defining global variables at the module level.
-list_of_media_classes = reading_csv()
 
+def suggestion_algorithm_single_use(likes_to_save: list[int], given_path: str):
+    # Defining global variables at the module level.
+    list_of_media_classes = reading_csv(given_path)
 
-# @profiler.profile
-def suggestion_algorithm_single_use(likes_to_save: list[int]):
     # This includes features that only need to be run at the start like setting saved media to seen
     data_of_index: list[str] = [data for like in likes_to_save for data in list_of_media_classes[like].get_data()]
     for like in likes_to_save:
@@ -16,11 +14,10 @@ def suggestion_algorithm_single_use(likes_to_save: list[int]):
         if not list_of_media_classes[like].viewed:
             list_of_media_classes[like].set_viewed()
 
-    return data_of_index
+    return list_of_media_classes, data_of_index
 
 
-@profiler.profile
-def suggestion_algorithm(media_data_to_set_scores):
+def suggestion_algorithm(list_of_media_classes, media_data_to_set_scores):
     for each_item in list_of_media_classes:  # Compare each item with the data of the media the user likes
         each_item.set_score(media_data_to_set_scores)
 
@@ -31,24 +28,22 @@ def directing_to_retailer(title: str) -> str:
     return full_link
 
 
-def selecting_media(likes_to_save, like):
+def selecting_media(likes_to_save, like, list_of_media_classes):
     list_of_media_classes.sort(key=lambda x: x.title)  # Sort by title so binary search can be performed
     found_item = binary_search.binary_search(list_of_media_classes, like.lower(), len(list_of_media_classes) - 1)
     if found_item is not None:
-        print("I MADE IT")
         # data_of_index can be a set here because duplicates aren't relevant when only one media is considered
         data_of_index: set = {iterator for iterator in list_of_media_classes[found_item].get_data()}
         list_of_media_classes[found_item].set_viewed()
         found_item_id: int = list_of_media_classes[found_item].id
-        likes_to_save = max_likes(found_item_id, likes_to_save)
+        likes_to_save = max_likes(found_item_id, likes_to_save, list_of_media_classes)
 
         amazon_link = directing_to_retailer(like)
         searched_data = SearchData(data_of_index, amazon_link)
-        print(searched_data, likes_to_save)
         return searched_data, likes_to_save
 
 
-def max_likes(found_item_id, likes_to_save):
+def max_likes(found_item_id, likes_to_save, list_of_media_classes):
     # The system only keeps track of the last 100 items the user likes between sessions
     if len(likes_to_save) >= 100:
         list_of_media_classes.sort(key=lambda x: x.id)  # Needed to set the items to not viewed
@@ -58,13 +53,7 @@ def max_likes(found_item_id, likes_to_save):
     return likes_to_save
 
 
-def main_algorithm(media_data_to_set_scores):
-    suggestion_algorithm(media_data_to_set_scores)
-    list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Efficient sorting algorithm
-    return list_of_media_classes
-
-
-def output_relevant_items():
+def output_relevant_items(list_of_media_classes):
     list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Sorting items by score
     for item in list_of_media_classes[:10]:  # Print items in order of predicted preference
         print(item.title, item.score)
@@ -74,15 +63,15 @@ def output_relevant_items():
 # Change eg_user_likes with a list of ID's for items the user likes.
 # Change eg_path with a path to the csv with all items
 
-def example_main(users_likes):
-    liked_data = suggestion_algorithm_single_use(users_likes)  # Get data from liked items
+def example_main(users_likes: list[int], dataset_path: str):
+    list_of_media_classes, liked_data = suggestion_algorithm_single_use(users_likes, dataset_path)  # Get data from liked items
     while True:
-        suggestion_algorithm(liked_data)  # Set item scores based on liked data
-        output_relevant_items()
+        suggestion_algorithm(list_of_media_classes, liked_data)  # Set item scores based on liked data
+        output_relevant_items(list_of_media_classes)
 
         selected_film = input("name a film")
         try:  # Get data for item except when item not found
-            data_and_link, id_to_save = selecting_media(users_likes, selected_film)
+            data_and_link, id_to_save = selecting_media(users_likes, selected_film, list_of_media_classes)
             # id_to_save can be added to user data and stored in the database to save user interests between sessions
             liked_data = data_and_link.data
             print(data_and_link.retail_link)  # link to purchase selected item
@@ -91,5 +80,6 @@ def example_main(users_likes):
 
 
 if __name__ == "__main__":
-    eg_user_likes = []  # Example user likes data
-    example_main(eg_user_likes)
+    eg_user_likes: list[int] = []  # Example user likes data
+    path: str = "films_data2.csv"
+    example_main(eg_user_likes, path)
