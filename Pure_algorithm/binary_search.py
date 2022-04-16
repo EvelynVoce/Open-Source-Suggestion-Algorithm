@@ -1,25 +1,29 @@
-def binary_search(list_of_media_objects, like, ub, lb=0):
-    mid = lb + (ub - lb) // 2
-    # If the lower bound is greater than upper bound then the item doesn't exist in the list
-    # print(list_of_media_objects[mid].title.lower())
-    # print(list_of_media_objects[ub].title.lower())
-    # print(list_of_media_objects[lb].title.lower())
-    if lb > ub:
+
+
+def binary_search2(list_of_media_objects, like, ub=None, lb=0):
+    if ub is None:
+        ub = len(list_of_media_objects)
+
+    mid = lb + (ub-lb) // 2
+    if lb > ub or mid == ub:
         return None
-    # When ub-lb = 1 the first item will always be chosen.
-    # This condition forces the list to choose the next item
-    elif ub - lb == 1:
-        if list_of_media_objects[ub].title.lower() == like:
-            return ub
 
-        elif list_of_media_objects[lb].title.lower() == like:
-            return lb
+    if list_of_media_objects[mid].title.lower() == like:
+        return mid
 
-    elif list_of_media_objects[mid].title.lower() == like:
-        return mid  # Item found with this ID
+    if like < list_of_media_objects[mid].title.lower():
+        return binary_search2(list_of_media_objects, like, mid, lb)
+    else:
+        return binary_search2(list_of_media_objects, like, ub, mid+1)
 
-    elif list_of_media_objects[mid].title.lower() > like:
-        return binary_search(list_of_media_objects, like, mid - 1, lb)
 
-    elif list_of_media_objects[mid].title.lower() < like:
-        return binary_search(list_of_media_objects, like, ub, mid + 1)
+# TEST BINARY SEARCH CODE
+from media_data_csv_reader import reading_csv
+
+if __name__ == "__main__":
+    list_of_media_classes = reading_csv("films_data2.csv")
+    list_of_media_classes.sort(key=lambda x: x.title)
+
+    for i, y in enumerate(list_of_media_classes):
+        print(i, y.title.lower())
+        print(binary_search2(list_of_media_classes, y.title.lower(), len(list_of_media_classes)))

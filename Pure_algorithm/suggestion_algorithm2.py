@@ -1,6 +1,9 @@
 import binary_search
 from SearchClass import SearchData
 from media_data_csv_reader import reading_csv
+from profiler import profile
+
+from time import perf_counter as pc
 
 
 def suggestion_algorithm_single_use(likes_to_save: list[int], given_path: str):
@@ -17,9 +20,12 @@ def suggestion_algorithm_single_use(likes_to_save: list[int], given_path: str):
     return list_of_media_classes, data_of_index
 
 
+@profile
 def suggestion_algorithm(list_of_media_classes, media_data_to_set_scores):
+    start = pc()
     for each_item in list_of_media_classes:  # Compare each item with the data of the media the user likes
         each_item.set_score(media_data_to_set_scores)
+    print("TIME:", (pc()-start)*1000, "MILLISECONDS")
 
 
 def directing_to_retailer(title: str) -> str:
@@ -30,7 +36,7 @@ def directing_to_retailer(title: str) -> str:
 
 def selecting_media(likes_to_save, like, list_of_media_classes):
     list_of_media_classes.sort(key=lambda x: x.title)  # Sort by title so binary search can be performed
-    found_item = binary_search.binary_search(list_of_media_classes, like.lower(), len(list_of_media_classes) - 1)
+    found_item = binary_search.binary_search2(list_of_media_classes, like.lower(), len(list_of_media_classes) - 1)
     if found_item is not None:
         # data_of_index can be a set here because duplicates aren't relevant when only one media is considered
         data_of_index: set = {iterator for iterator in list_of_media_classes[found_item].get_data()}
