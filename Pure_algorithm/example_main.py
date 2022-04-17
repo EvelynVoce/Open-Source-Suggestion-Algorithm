@@ -29,51 +29,9 @@ def example_main(users_likes: list[int], path: str):
             print("Error")
 
 
-# if __name__ == "__main__":
-#     eg_likes: list[int] = []  # Example user likes data
-#     eg_path: str = "films_data2.csv"
-#     example_main(eg_likes, eg_path)
-
-
-# Performance test
 if __name__ == "__main__":
-    from random import randint
     eg_likes: list[int] = []  # Example user likes data
-    print(len(eg_likes))
     eg_path: str = "films_data2.csv"
     example_main(eg_likes, eg_path)
 
-    # from matplotlib import pyplot as plt
-    # num_items = [10, 25, 50, 100, 250, 500, 1000]
-    # run_time = [0.030, 0.082, 0.162, 0.313, 0.775, 1.560, 3.129]
-    #
-    # plt.title("A graph to show how run time scales in relation to the number of known user interests")
-    # plt.xlabel("Number of users saved interests")
-    # plt.ylabel("Run-time (seconds)")
-    #
-    # plt.plot(num_items, run_time, color='red', marker='o')
-    # plt.savefig('alg2-runtime.png', bbox_inches="tight")
 
-
-    # from matplotlib import pyplot as plt
-    # num_items = [10, 25, 50, 100, 250, 500, 1000]
-    # run_time = [0.004 for x in range(len(num_items))]
-    #
-    # plt.title("A graph to show how run time scales in relation to the number"
-    #           " of known user interests when a new item is selected")
-    # plt.xlabel("Number of users saved interests")
-    # plt.ylabel("Run-time (seconds)")
-    #
-    # plt.plot(num_items, run_time, color='red', marker='o')
-    # plt.savefig('alg2-runtime_average_case.png', bbox_inches="tight")
-
-    from matplotlib import pyplot as plt
-    num_items = [250, 500, 1000, 1500, 2000, 2500]
-    run_time = [0.032, 0.058, 0.120, 0.174, 0.219, 0.276]
-
-    plt.title("A graph to show how run time scales in relation to the size of the dataset")
-    plt.xlabel("Number of items in the dataset")
-    plt.ylabel("Run-time (seconds)")
-
-    plt.plot(num_items, run_time, color='red', marker='o')
-    plt.savefig('alg2-runtime_data_scale.png', bbox_inches="tight")
