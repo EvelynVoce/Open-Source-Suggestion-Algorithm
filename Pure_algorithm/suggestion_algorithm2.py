@@ -22,12 +22,17 @@ def suggestion_algorithm_single_use(likes_to_save: list[int], given_path: str):
     return list_of_media_classes, data_of_index
 
 
-@profile
+# @profile
 def suggestion_algorithm(list_of_media_classes: list[MediaData], media_data_to_set_scores):
     start = pc()
     for each_item in list_of_media_classes:  # Compare each item with the data of the media the user likes
         each_item.set_score(media_data_to_set_scores)
     print("TIME:", (pc()-start)*1000, "MILLISECONDS")
+
+
+def get_items(list_of_media_classes: list[MediaData]) -> list[MediaData]:
+    list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Sorting items by score
+    return list_of_media_classes
 
 
 def directing_to_retailer(title: str) -> str:
@@ -54,16 +59,9 @@ def selecting_media(likes_to_save: list[int], like: str, list_of_media_classes: 
 def max_likes(found_item_id: int, likes_to_save: list[int], list_of_media_classes: list[MediaData]) -> list[int]:
     # The system only keeps track of the last 100 items the user likes between sessions
     if len(likes_to_save) >= 100:
-        print("GREATER THAN")
         list_of_media_classes.sort(key=lambda x: x.id)  # Needed to set the items to not viewed
         list_of_media_classes[likes_to_save[0]].set_not_viewed()
         likes_to_save.pop(0)
-        # print("VIEWED?", list_of_media_classes[0].viewed) Test line to check removing a like is working correctly
     likes_to_save.append(found_item_id)
-
     return likes_to_save
 
-
-def get_items(list_of_media_classes: list[MediaData]) -> list[MediaData]:
-    list_of_media_classes.sort(key=lambda x: x.score, reverse=True)  # Sorting items by score
-    return list_of_media_classes

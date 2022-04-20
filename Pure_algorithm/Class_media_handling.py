@@ -10,7 +10,7 @@ class MediaData:
 
         # If developers need to access columns specifically by name they can name them as variables here
         # self.rating: str = data[3]
-        self.genres: str = data[4]
+        # self.genres: str = data[4]
         # self.directors: str = data[5]
         # self.writers: str = data[6]
         # self.cast: str = data[7]
@@ -18,7 +18,7 @@ class MediaData:
 
         list_of_lists_used_for_scores = {ele for ele in data[3:]}
         self.data_used_for_scores2: set[str] = {element for data in list_of_lists_used_for_scores for element in
-                                                data.split(', ')}
+                                                data.split('; ')}
 
     def get_data(self):  # Gets the data for each media the user has liked
         for element in self.data_used_for_scores2:

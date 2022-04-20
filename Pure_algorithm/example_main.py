@@ -2,6 +2,7 @@
 # Change eg_user_likes with a list of ID's for items the user likes.
 # Change eg_path with a path to the csv with all items
 
+
 from suggestion_algorithm2 import suggestion_algorithm_single_use, suggestion_algorithm, get_items, selecting_media
 
 

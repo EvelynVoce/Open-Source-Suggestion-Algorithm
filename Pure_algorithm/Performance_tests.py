@@ -18,5 +18,5 @@ def max_likes_test():
 
 # Performance test
 if __name__ == "__main__":
-    # scalability_of_likes_test()
-    max_likes_test()
+    scalability_of_likes_test()
+    # max_likes_test()
