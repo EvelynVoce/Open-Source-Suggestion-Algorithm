@@ -2,7 +2,6 @@ import binary_search
 from Class_media_handling import MediaData
 from SearchClass import SearchData
 from media_data_csv_reader import reading_csv
-from profiler import profile
 
 # Time is used to measure run-time in milliseconds
 from time import perf_counter as pc
@@ -22,7 +21,6 @@ def suggestion_algorithm_single_use(likes_to_save: list[int], given_path: str):
     return list_of_media_classes, data_of_index
 
 
-# @profile
 def suggestion_algorithm(list_of_media_classes: list[MediaData], media_data_to_set_scores):
     start = pc()
     for each_item in list_of_media_classes:  # Compare each item with the data of the media the user likes

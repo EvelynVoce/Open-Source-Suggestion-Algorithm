@@ -1,5 +1,4 @@
 import binary_search
-import profiler  # This profiles the system, so I can check if anything is too inefficient
 from SearchClass import SearchData
 from media_data_csv_reader import reading_csv
 
@@ -19,7 +18,6 @@ def suggestion_algorithm_single_use(likes_to_save: list[int]):
     return data_of_index
 
 
-@profiler.profile
 def suggestion_algorithm(media_data_to_set_scores):
     for each_item in list_of_media_classes:  # Compare each item with the data of the media the user likes
         each_item.set_score(media_data_to_set_scores)

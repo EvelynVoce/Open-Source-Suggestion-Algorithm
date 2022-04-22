@@ -25,8 +25,9 @@ def writing_account(signup_username, signup_password):
 def create_account(root, go_back, signup_username: str, signup_password: str):
     checks_passed: bool = Password_validation.run_checks(signup_password)  # Password validation
     if checks_passed:
+        hashed_username: str = hashing(signup_username)
         hashed_password: str = hashing(signup_password)
-        writing_account(signup_username, hashed_password)
+        writing_account(hashed_username, hashed_password)
         messagebox.showinfo(message="Account created")
         clear_root(root)
         go_back()

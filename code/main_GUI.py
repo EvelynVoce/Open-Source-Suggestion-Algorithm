@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import utility
 from table_management import create_table, insert_media_table
-from suggestion_algorithm2 import main_algorithm, suggestion_algorithm_single_use, selecting_media, list_of_media_classes
+from suggestion_algorithm import main_algorithm, suggestion_algorithm_single_use, selecting_media, list_of_media_classes
 from account_handling import updating_account_data
 from filters import filters, Filters
 import webbrowser

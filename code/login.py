@@ -10,7 +10,7 @@ button_col: str = "dark grey"
 
 
 def login_account(root, login_username, login_password):
-    account_found = reading_account(login_username, utility.hashing(login_password))
+    account_found = reading_account(utility.hashing(login_username), utility.hashing(login_password))
     if account_found is not None:
         try:
             account_data = account_found[2].split(',')
